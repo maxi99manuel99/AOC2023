@@ -78,13 +78,12 @@ def replace_digit_strings(calibration_strings: list[str]) -> None:
                 continue
             last_appearance = len(line) - reverse_first_idx - len(digit_string)
             if last_appearance > last_idx_string:
+                last_idx_string = last_appearance
                 last_digit_string = digit_string
 
         if first_digit_string:
-            calibration_strings[i] = line[:first_idx_string] + DIGIT_STRING_TO_INT[first_digit_string] + line[first_idx_string + 1:]
-            calibration_strings[i] = line[:last_idx_string] + DIGIT_STRING_TO_INT_REVERSED[last_digit_string] + line[last_idx_string + 1:]
-
-
+            calibration_strings[i] = line[:first_idx_string] + DIGIT_STRING_TO_INT[first_digit_string] + line[first_idx_string + 1: last_idx_string] + DIGIT_STRING_TO_INT_REVERSED[last_digit_string] + line[last_idx_string + 1:]
+            
 if __name__ == "__main__":
     sum = 0
     with open("input.txt") as fp:
