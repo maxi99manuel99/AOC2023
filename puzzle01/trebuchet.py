@@ -30,7 +30,8 @@ def sum_calibration_values(calibration_strings: list[str]) -> int:
 def replace_digit_strings(calibration_strings: list[str]) -> None:
     """
     Iterates through list of calibration strings and replaces the second index of a string 
-    of a digit with its actual digit (e.g. one -> o1e).
+    of a digit with its actual digit (e.g. one -> o1e). This is done so that e.g. eighthree
+    will yield both digits 8 and 3
 
     :param calibration_strings: the list of calibration strings
     """
