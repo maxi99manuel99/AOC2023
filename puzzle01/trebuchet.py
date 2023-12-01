@@ -11,6 +11,7 @@ DIGIT_STRING_TO_INT = {
     "nine": "9",
 }
 
+
 def sum_calibration_values(calibration_strings: list[str]) -> int:
     """
     Extracts calibration value from each line in a list of calibration document strings
@@ -27,6 +28,7 @@ def sum_calibration_values(calibration_strings: list[str]) -> int:
 
     return sum
 
+
 def replace_digit_strings(calibration_strings: list[str]) -> None:
     """
     Iterates through list of calibration strings and replaces the second index of a string 
@@ -41,9 +43,9 @@ def replace_digit_strings(calibration_strings: list[str]) -> None:
             while second_indx := line.find(digit_string)+1:
                 if second_indx == 0:
                     break
-                line = line[:second_indx] + DIGIT_STRING_TO_INT[digit_string] + line[second_indx + 1:]
+                line = line[:second_indx] + \
+                    DIGIT_STRING_TO_INT[digit_string] + line[second_indx + 1:]
         calibration_strings[i] = line
-        
 
 
 if __name__ == "__main__":
@@ -53,5 +55,6 @@ if __name__ == "__main__":
         summed_calibration = sum_calibration_values(calibration_strings)
         print(f"Part1 result: {summed_calibration}")
         replace_digit_strings(calibration_strings)
-        summed_calibration_after_replace = sum_calibration_values(calibration_strings)
+        summed_calibration_after_replace = sum_calibration_values(
+            calibration_strings)
         print(f"Part2 result: {summed_calibration_after_replace}")

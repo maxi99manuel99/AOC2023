@@ -24,6 +24,7 @@ DIGIT_STRING_TO_INT_REVERSED = {
     "enin": "9",
 }
 
+
 def sum_calibration_values(calibration_strings: list[str]) -> int:
     """
     Extracts calibration value from each line in a list of calibration document strings
@@ -37,14 +38,13 @@ def sum_calibration_values(calibration_strings: list[str]) -> int:
         for char in line:
             if char.isdigit():
                 first_digit = char
-                break;
+                break
         for char in reversed(line):
             if char.isdigit():
                 last_digit = char
-                break;
+                break
         calibration_value = int(first_digit + last_digit)
         sum += calibration_value
-    
 
     return sum
 
@@ -58,17 +58,21 @@ def replace_digit_strings(calibration_strings: list[str]) -> None:
     """
 
     for i, line in enumerate(calibration_strings):
-        
+
         first_idx_string = np.inf
         first_digit_string = ""
         last_idx_string = -np.inf
         last_digit_string = ""
-        
-        first_idx_string, first_digit_string = min(((line.find(sub), sub) for sub in DIGIT_STRING_TO_INT.keys() if sub in line), default=(-1, None))
-        last_idx_string, last_digit_string = max(((len(line) - line[::-1].find(sub) - len(sub), sub) for sub in DIGIT_STRING_TO_INT_REVERSED.keys() if sub in line[::-1]), default=(-1, None))
-            
+
+        first_idx_string, first_digit_string = min(((line.find(
+            sub), sub) for sub in DIGIT_STRING_TO_INT.keys() if sub in line), default=(-1, None))
+        last_idx_string, last_digit_string = max(((len(line) - line[::-1].find(sub) - len(
+            sub), sub) for sub in DIGIT_STRING_TO_INT_REVERSED.keys() if sub in line[::-1]), default=(-1, None))
+
         if first_digit_string:
-            calibration_strings[i] = line[:first_idx_string] + DIGIT_STRING_TO_INT[first_digit_string] + line[first_idx_string + 1: last_idx_string] + DIGIT_STRING_TO_INT_REVERSED[last_digit_string] + line[last_idx_string + 1:]
+            calibration_strings[i] = line[:first_idx_string] + DIGIT_STRING_TO_INT[first_digit_string] + line[first_idx_string +
+                                                                                                              1: last_idx_string] + DIGIT_STRING_TO_INT_REVERSED[last_digit_string] + line[last_idx_string + 1:]
+
 
 if __name__ == "__main__":
     sum = 0
@@ -77,5 +81,6 @@ if __name__ == "__main__":
         summed_calibration = sum_calibration_values(calibration_strings)
         print(f"Part1 result: {summed_calibration}")
         replace_digit_strings(calibration_strings)
-        summed_calibration_after_replace = sum_calibration_values(calibration_strings)
+        summed_calibration_after_replace = sum_calibration_values(
+            calibration_strings)
         print(f"Part2 result: {summed_calibration_after_replace}")
