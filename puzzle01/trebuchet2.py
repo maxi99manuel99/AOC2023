@@ -34,9 +34,17 @@ def sum_calibration_values(calibration_strings: list[str]) -> int:
     """
     sum = 0
     for line in calibration_strings:
-        extracted_digits = [x for x in line if x.isdigit()]
-        calibration_value = int(extracted_digits[0] + extracted_digits[-1])
+        for char in line:
+            if char.isdigit():
+                first_digit = char
+                break;
+        for char in reversed(line):
+            if char.isdigit():
+                last_digit = char
+                break;
+        calibration_value = int(first_digit + last_digit)
         sum += calibration_value
+    
 
     return sum
 
