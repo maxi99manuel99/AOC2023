@@ -34,19 +34,12 @@ def sum_calibration_values(calibration_strings: list[str]) -> int:
     """
     sum = 0
     for line in calibration_strings:
-        for char in line:
-            if char.isdigit():
-                first_digit = char
-                break;
-        for char in reversed(line):
-            if char.isdigit():
-                last_digit = char
-                break;
-        calibration_value = int(first_digit + last_digit)
+        extracted_digits = [x for x in line if x.isdigit()]
+        calibration_value = int(extracted_digits[0] + extracted_digits[-1])
         sum += calibration_value
-    
 
     return sum
+
 
 def replace_digit_strings(calibration_strings: list[str]) -> None:
     """
@@ -63,27 +56,12 @@ def replace_digit_strings(calibration_strings: list[str]) -> None:
         last_idx_string = -np.inf
         last_digit_string = ""
         
-        for digit_string in DIGIT_STRING_TO_INT.keys():
-            first_appearance = line.find(digit_string)
-            if first_appearance == -1:
-                continue
-            elif first_appearance < first_idx_string:
-                first_idx_string = first_appearance
-                first_digit_string = digit_string
+        first_idx_string, first_digit_string = min(((line.find(sub), sub) for sub in DIGIT_STRING_TO_INT.keys() if sub in line), default=(-1, None))
+        last_idx_string, last_digit_string = max(((len(line) - line[::-1].find(sub) - len(sub), sub) for sub in DIGIT_STRING_TO_INT_REVERSED.keys() if sub in line[::-1]), default=(-1, None))
             
-
-        for digit_string in DIGIT_STRING_TO_INT_REVERSED.keys():
-            reverse_first_idx = line[::-1].find(digit_string)
-            if reverse_first_idx == -1:
-                continue
-            last_appearance = len(line) - reverse_first_idx - len(digit_string)
-            if last_appearance > last_idx_string:
-                last_idx_string = last_appearance
-                last_digit_string = digit_string
-
         if first_digit_string:
             calibration_strings[i] = line[:first_idx_string] + DIGIT_STRING_TO_INT[first_digit_string] + line[first_idx_string + 1: last_idx_string] + DIGIT_STRING_TO_INT_REVERSED[last_digit_string] + line[last_idx_string + 1:]
-            
+
 if __name__ == "__main__":
     sum = 0
     with open("input.txt") as fp:
