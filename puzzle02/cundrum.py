@@ -71,6 +71,7 @@ def sum_min_needed_cubes(games: list[tuple[int, list[dict]]]) -> int:
 
 if __name__ == "__main__":
     available_cubes = {"red": 12, "green": 13, "blue": 14}
+    
     with open("input.txt") as fp:
         game_strings = fp.readlines()
         games = load_games(game_strings)
