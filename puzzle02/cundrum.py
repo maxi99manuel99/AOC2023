@@ -56,7 +56,6 @@ def sum_possible_games_with_replacement(games: list[tuple[int, list[dict]]], ava
 
     return sum
 
-
 def sum_min_needed_cubes(games: list[tuple[int, list[dict]]]) -> int:
 
     sum = 0
@@ -69,7 +68,6 @@ def sum_min_needed_cubes(games: list[tuple[int, list[dict]]]) -> int:
         sum += np.prod(list(min_needed.values()))
 
     return sum
-
 
 if __name__ == "__main__":
     available_cubes = {"red": 12, "green": 13, "blue": 14}
