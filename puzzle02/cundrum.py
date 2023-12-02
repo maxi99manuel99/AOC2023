@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def load_games(game_strings: list[str]) -> list[tuple[int, dict[int, list]]]:
+def load_games(game_strings: list[str]) -> list[tuple[int, dict[str, list]]]:
     """
     Converts each game string into a tuple of its game index and a dictionary that contains
     the colors as keys and a list of the amount of draws per set in that game as values.
@@ -33,7 +33,7 @@ def load_games(game_strings: list[str]) -> list[tuple[int, dict[int, list]]]:
 
     return all_games
 
-def sum_possible_games_with_replacement(games: list[tuple[int, dict[int, list]]], available_cubes: dict) -> int:
+def sum_possible_games_with_replacement(games: list[tuple[int, dict[str, list]]], available_cubes: dict) -> int:
     """
     Checks if a game is possible for each game and returns the sum of the indices of all possible games
 
@@ -55,7 +55,7 @@ def sum_possible_games_with_replacement(games: list[tuple[int, dict[int, list]]]
 
     return sum
 
-def sum_min_needed_cubes(games: list[tuple[int, dict[int, list]]]) -> int:
+def sum_min_needed_cubes(games: list[tuple[int, dict[str, list]]]) -> int:
     """
     For each game detects the minimum amout of cubes needed of each color 
     and multiplies the value for each color
