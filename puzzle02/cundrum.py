@@ -21,18 +21,17 @@ def load_games(game_strings: list[str]) -> list[tuple[int, dict[list]]]:
         # game sets is now a list of strings like [' 1 red,4 blue,2 green', ' 6 red,2 green,11 blue',' 1 red, 7 blue']
         # now we want to convert it to a dict like {'red': [1, 6, 1], 'green': [2, 2], 'blue': [4, 11, 7]}
         game_set_dict = {"red": [], "green": [], "blue": []}
-        for set_string in game_sets: 
+        for set_string in game_sets:
             # split ' 1 red, 4 blue, 2 green' into [' 1 red', ' 4 blue', ' 2 green']
             color_split = set_string.split(",")
             # extract int and color from each string and append to dict of that game
             for color_string in color_split:
                 amount, color = color_string.strip().split(" ")
                 game_set_dict[color].append(int(amount))
-                
+
         all_games.append((game_idx, game_set_dict))
 
     return all_games
-
 
 def sum_possible_games_with_replacement(games: list[tuple[int, list[dict]]], available_cubes: dict) -> int:
     """
@@ -79,7 +78,7 @@ def sum_min_needed_cubes(games: list[tuple[int, list[dict]]]) -> int:
 
 if __name__ == "__main__":
     available_cubes = {"red": 12, "green": 13, "blue": 14}
-    
+
     with open("input.txt") as fp:
         game_strings = fp.readlines()
         games = load_games(game_strings)
