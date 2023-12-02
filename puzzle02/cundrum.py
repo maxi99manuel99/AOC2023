@@ -14,22 +14,19 @@ def load_games(game_strings: list[str]) -> list[tuple[int, dict[list]]]:
     for line in game_strings:
         game_idx, game_sets = line.strip().split(":")
         game_idx = int(game_idx.split(" ")[1])
-        game_sets = game_sets.replace(" ", "").split(";")
+        game_sets = game_sets.split(";")
 
+        # game sets is now a list of strings like [' 1 red,4 blue,2 green', ' 6 red,2 green,11 blue',' 1 red, 7 blue']
+        # now we want to convert it to a dict like {'red': [1, 6, 1], 'green': [2, 2], 'blue': [4, 11, 7]}
         game_set_dict = {"red": [], "green": [], "blue": []}
-        for set_string in game_sets:
-            set_dict = {}
+        for set_string in game_sets: 
+            # split ' 1 red, 4 blue, 2 green' into [' 1 red', ' 4 blue', ' 2 green']
             color_split = set_string.split(",")
+            # extract int and color from each string and append to dict of that game
             for color_string in color_split:
-                i = 0
-                n_cubes = ""
-                while color_string[i].isdigit():
-                    n_cubes += color_string[i]
-                    i += 1
-                n_cubes = int(n_cubes)
-                game_set_dict[color_string[i:]].append(n_cubes)
-            
-
+                amount, color = color_string.strip().split(" ")
+                game_set_dict[color].append(int(amount))
+                
         all_games.append((game_idx, game_set_dict))
 
     return all_games
