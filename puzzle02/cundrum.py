@@ -4,7 +4,8 @@ import numpy as np
 def load_games(game_strings: list[str]) -> list[tuple[int, dict[str, list]]]:
     """
     Converts each game string into a tuple of its game index and a dictionary that contains
-    the colors as keys and a list of the amount of draws per set in that game as values.
+    the colors as keys and a list of the amount of draws for all sets (that contain the color)
+    in that game as values.
     e.g (1, {'red': [5, 10, 15, 6, 4, 5], 'green': [4, 4, 5, 3], 'blue': [7, 7, 5, 7, 8, 4]})
     Returns a list of these tuples
 
@@ -38,7 +39,8 @@ def sum_possible_games_with_replacement(games: list[tuple[int, dict[str, list]]]
     Checks if a game is possible for each game and returns the sum of the indices of all possible games
 
     :param games: list of tuples of game indices and a dictionary that contains
-                  the colors as keys and a list of the amount of draws per set in that game as values
+                  the colors as keys and a list of the amount of draws for each set 
+                  (that contains the color) in that game as values
     :param available_cubes: contains the amount of cubes available per color
     """
 
@@ -62,7 +64,8 @@ def sum_min_needed_cubes(games: list[tuple[int, dict[str, list]]]) -> int:
     Then returns the sum over all these values of all games
 
     :param games: list of tuples of game indices and a dictionary that contains
-                  the colors as keys and a list of the amount of draws per set in that game as values
+                  the colors as keys and a list of the amount of draws for each set 
+                  (that contains the color) in that game as values
     """
 
     sum = 0
