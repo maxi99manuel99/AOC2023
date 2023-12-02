@@ -57,6 +57,14 @@ def sum_possible_games_with_replacement(games: list[tuple[int, list[dict]]], ava
     return sum
 
 def sum_min_needed_cubes(games: list[tuple[int, list[dict]]]) -> int:
+    """
+    For each game detects the minimum amout of cubes needed of each color 
+    and multiplies the value for each color
+    Then returns the sum over all these values of all games
+
+    :param games: list of tuples of game indices and a dictionary that contains
+                  the colors as keys and a list of the amount of draws per set in that game as values
+    """
 
     sum = 0
 
