@@ -5,6 +5,7 @@ def load_games(game_strings: list[str]) -> list[tuple[int, dict[list]]]:
     """
     Converts each game string into a tuple of its game index and a dictionary that contains
     the colors as keys and a list of the amount of draws per set in that game as values.
+    e.g (1, {'red': [5, 10, 15, 6, 4, 5], 'green': [4, 4, 5, 3], 'blue': [7, 7, 5, 7, 8, 4]})
     Returns a list of these tuples
 
     :param game_strings: contains all game strings read from the input file
