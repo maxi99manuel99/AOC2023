@@ -12,6 +12,7 @@ def load_games(game_strings: list[str]) -> list[tuple[int, dict[list]]]:
 
     all_games = []
     for line in game_strings:
+        # split game string into its idx and a list of game set strings
         game_idx, game_sets = line.strip().split(":")
         game_idx = int(game_idx.split(" ")[1])
         game_sets = game_sets.split(";")
