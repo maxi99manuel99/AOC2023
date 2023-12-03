@@ -12,7 +12,14 @@ class Row():
         self.symbol_positions = []
         self.initialize_number_and_symbol_indices()
 
-    def initialize_number_and_symbol_indices(self):
+    def get_symbol_positions(self):
+        return self.symbol_positions
+
+    def initialize_number_and_symbol_indices(self) -> None:
+        """
+        Creates a list of indices of all symbols in this row as well as a list
+        of tuples of all integers in this row with their start and end index
+        """
         currently_int = False
         current_int_start = 0
         current_int_str = ""
@@ -34,10 +41,10 @@ class Row():
             if char in SYMBOLS:
                 self.symbol_positions.append(idx)
 
-    def get_symbol_positions(self):
-        return self.symbol_positions
-
-    def sum_valid_numbers_of_row(self):
+    def sum_valid_numbers_of_row(self) -> int:
+        """
+        Returns the sum of all numbers in this row that are adjacent to a symbol
+        """
         symbol_indices_to_check = self.symbol_positions.copy()
         if self.next_row:
             symbol_indices_to_check += self.next_row.get_symbol_positions()
@@ -51,7 +58,10 @@ class Row():
         return sum
 
 
-def sum_over_valid_row_numbers(start_row: Row):
+def sum_over_valid_row_numbers(start_row: Row) -> int:
+    """
+    Iterates over all Row objects and returns a sum over all valid numbers of all rows
+    """
     sum = start_row.sum_valid_numbers_of_row()
     row = start_row
     while row := row.next_row:
