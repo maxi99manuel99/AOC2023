@@ -90,7 +90,7 @@ class Row():
         """
         Returns the gear ratio of this row. This means: 
         For each "*" in the row with exactly two neighboring numbers
-        calculates the product and sums these products.
+        calculates the product of these two numbers and sums these products.
         """
         numbers_to_check = self.numbers_with_postions.copy()
         numbers_to_check += self.get_numbers_of_neighbors()
