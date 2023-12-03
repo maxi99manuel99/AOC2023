@@ -100,9 +100,9 @@ class Row():
             adjacent_numbers = []
             for number, (start_idx, end_idx) in numbers_to_check:
                 if star_pos in np.arange(start_idx-1, end_idx+1):
-                    if len(adjacent_numbers) == 2:
-                        break
                     adjacent_numbers.append(number)
+                    if len(adjacent_numbers) > 2:
+                        break
 
             if len(adjacent_numbers) == 2:
                 sum += adjacent_numbers[0] * adjacent_numbers[1]
