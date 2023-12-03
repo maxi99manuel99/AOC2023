@@ -133,7 +133,6 @@ def sum_over_row_gear_ratios(start_row: Row) -> int:
     return sum        
 
 if __name__ == "__main__":
-    previous_row = None
     with open("input.txt") as fp:
         first_line = fp.readline()
         first_row = Row(first_line)
