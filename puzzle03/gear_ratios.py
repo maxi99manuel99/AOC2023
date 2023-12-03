@@ -5,12 +5,12 @@ SYMBOLS = ["*", "%", "/", "+", "=", "@", "#", "$", "-", "&"]
 
 class Row():
     def __init__(self, row_string: str) -> None:
-        self.previous_row = None
-        self.next_row = None
-        self.row_string = row_string
-        self.numbers_with_postions = []
-        self.symbol_positions = []
-        self.star_positions = []
+        self.previous_row: Row = None
+        self.next_row: Row = None
+        self.row_string: str = row_string
+        self.numbers_with_postions: list[tuple[int, tuple[int, int]]] = []
+        self.symbol_positions: list[int] = []
+        self.star_positions: list[int] = []
         self.initialize_number_and_symbol_indices()
 
     def get_symbol_positions(self):
