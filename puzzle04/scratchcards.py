@@ -3,7 +3,7 @@ import numpy as np
 class Scratchcard(): 
     def __init__(self, card_string: str) -> None:
         winning_string, drawn_string = card_string.split("|")
-        self.winning_numbers, self.drawn_numbers = np.array(winning_string.split(), int), np.array(drawn_string.split(), int)
+        self.winning_numbers, self.drawn_numbers = winning_string.split(), drawn_string.split()
     
     def calculate_num_winnings_and_points(self) -> (int, int):
         """
