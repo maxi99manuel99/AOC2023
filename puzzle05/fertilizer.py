@@ -11,10 +11,8 @@ class SeedRange():
 class ConvertionRange():
 
     def __init__(self, destination_range_start: int, source_range_start: int, range_len: int) -> None:
-        self.dest_start = destination_range_start
-        self.src_start = source_range_start
-        self.dest_end = destination_range_start + (range_len - 1)
-        self.src_end = source_range_start + (range_len - 1)
+        self.dest = SeedRange(destination_range_start, range_len)
+        self.src = SeedRange(source_range_start, range_len)
 
 
 class ConvertionDict():
@@ -46,20 +44,20 @@ def get_new_rules_with_filled_gaps(convertion_dict: ConvertionDict, seed_range: 
     :param seed_range: SeedRange to add extra rules on the outer indices
     """
     convertion_rules: list[ConvertionRange] = sorted(
-        convertion_dict.possible_convertions, key=lambda x: x.src_start)
+        convertion_dict.possible_convertions, key=lambda x: x.src.start)
     new_rules: list[ConvertionRange] = []
-    if seed_range.start < convertion_rules[0].src_start:
+    if seed_range.start < convertion_rules[0].src.start:
         new_rules.append(ConvertionRange(seed_range.start, seed_range.start,
-                         convertion_rules[0].src_start - seed_range.start))
-    if seed_range.end > convertion_rules[-1].src_end:
+                         convertion_rules[0].src.start - seed_range.start))
+    if seed_range.end > convertion_rules[-1].src.end:
         new_rules.append(ConvertionRange(
-            convertion_rules[-1].src_end, convertion_rules[-1].src_end, seed_range.end - convertion_rules[-1].src_end))
+            convertion_rules[-1].src.end, convertion_rules[-1].src.end, seed_range.end - convertion_rules[-1].src.end))
 
     for i, rule in enumerate(convertion_rules[:-1]):
-        if convertion_rules[i].src_end + 1 != convertion_rules[i+1].src_start:
-            new_rules.append(ConvertionRange(convertion_rules[i].src_end + 1,
-                                             convertion_rules[i].src_end + 1,
-                                             convertion_rules[i+1].src_start - convertion_rules[i].src_end + 1))
+        if convertion_rules[i].src.end + 1 != convertion_rules[i+1].src.start:
+            new_rules.append(ConvertionRange(convertion_rules[i].src.end + 1,
+                                             convertion_rules[i].src.end + 1,
+                                             convertion_rules[i+1].src.start - convertion_rules[i].src.end + 1))
     return convertion_rules + new_rules
 
 
@@ -75,9 +73,9 @@ def calculate_locations(initial_seeds: list[int], convertion_dicts: list[Convert
     for source in initial_seeds:
         for convertion_dict in convertion_dicts:
             for posible_convertion in convertion_dict.possible_convertions:
-                if posible_convertion.src_start <= source <= posible_convertion.src_end:
-                    dest = posible_convertion.dest_start + \
-                        (source - posible_convertion.src_start)
+                if posible_convertion.src.start <= source <= posible_convertion.src.end:
+                    dest = posible_convertion.dest.start + \
+                        (source - posible_convertion.src.start)
                     source = dest
                     break
         locations.append(source)
@@ -94,16 +92,16 @@ def calculate_range_convertion(seed_range: SeedRange, convertion_rules: list[Con
     new_ranges = []
     for convertion_range in convertion_rules:
 
-        if seed_range.end < convertion_range.src_start or seed_range.start > convertion_range.src_end:
+        if seed_range.end < convertion_range.src.start or seed_range.start > convertion_range.src.end:
             continue
 
-        new_start = max(seed_range.start, convertion_range.src_start)
-        new_end = min(seed_range.end, convertion_range.src_end)
+        new_start = max(seed_range.start, convertion_range.src.start)
+        new_end = min(seed_range.end, convertion_range.src.end)
 
-        dest_start = convertion_range.dest_start + \
-            (new_start - convertion_range.src_start)
-        dest_end = convertion_range.dest_start + \
-            (new_end - convertion_range.src_start)
+        dest_start = convertion_range.dest.start + \
+            (new_start - convertion_range.src.start)
+        dest_end = convertion_range.dest.start + \
+            (new_end - convertion_range.src.start)
         new_ranges.append(SeedRange(dest_start, dest_end - dest_start))
 
     return new_ranges
