@@ -109,10 +109,10 @@ def calculate_range_convertion(seed_range: SeedRange, convertion_rules: list[Con
     return new_ranges
 
 
-def calculate_locations_with_seed_pairs(seed_pairs: list[list[int]], convertion_dicts: list[ConvertionDict]) -> list[SeedRange]:
+def calculate_locations_by_seed_ranges(seed_pairs: list[list[int]], convertion_dicts: list[ConvertionDict]) -> list[SeedRange]:
     """
-    Takes a list of seed_pairs, converts them to SeedRanges and then 
-    converts these into location ranges by iterating over  all ConvertionDicts and their rules.
+    Takes a list of seed_pairs representing ranges, converts them to SeedRanges and then 
+    converts these into location ranges (still type SeedRange) by iterating over  all ConvertionDicts and their rules.
     Returns a list of location ranges
 
     :param seed_pairs: seed range input, consisting of a list of seed start indices and the length of their range
@@ -163,7 +163,7 @@ if __name__ == "__main__":
 
     seed_pairs = [initial_seeds[x:x+2]
                   for x in range(0, len(initial_seeds), 2)]
-    location_ranges = calculate_locations_with_seed_pairs(
+    location_ranges = calculate_locations_by_seed_ranges(
         seed_pairs, convertion_dicts)
     min_location_pairs = min(location_ranges, key=lambda x: x.start).start
     print(f"Part 2 Result: {min_location_pairs}")
