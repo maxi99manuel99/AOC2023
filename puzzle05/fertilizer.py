@@ -34,7 +34,7 @@ class ConvertionDict():
                 int(split_conv[0]), int(split_conv[1]), int(split_conv[2])))
 
 
-def get_new_rules_with_filled_gaps(convertion_dict: ConvertionDict, seed_range: SeedRange) -> list[ConvertionRange]:
+def fill_ruleset_gaps(convertion_dict: ConvertionDict, seed_range: SeedRange) -> list[ConvertionRange]:
     """
     Returns a new rule set based on the rule set of a given dict, that adds rules for the left out
     parts of the rulest and rules after and before the maximum and minimum source index of the ruleset
@@ -123,7 +123,7 @@ def calculate_locations_by_seed_ranges(seed_pairs: list[list[int]], convertion_d
         for convertion_dict in convertion_dicts:
             new_ranges = []
             for seed_range in current_ranges:
-                updated_convertion_rules = get_new_rules_with_filled_gaps(
+                updated_convertion_rules = fill_ruleset_gaps(
                     convertion_dict, seed_range)
                 new_ranges += calculate_range_convertion(
                     seed_range, updated_convertion_rules)
