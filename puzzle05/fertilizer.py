@@ -1,6 +1,3 @@
-import sys
-
-
 class SeedRange():
 
     def __init__(self, range_start: int, range_len: int) -> None:
