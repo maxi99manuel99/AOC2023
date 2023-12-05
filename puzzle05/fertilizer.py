@@ -145,8 +145,7 @@ if __name__ == "__main__":
                     current_dict.initialize_convertion(convertion_strings)
                     convertion_dicts.append(current_dict)
                 split_source_dest = line.split("-")
-                source, destination = split_source_dest[0], split_source_dest[2].split()[
-                    0]
+                source, destination = split_source_dest[0], split_source_dest[2].split()[0]
                 current_dict = ConvertionDict(source, destination)
                 convertion_strings = []
             elif line[0].isdigit():
