@@ -1,6 +1,6 @@
 import numpy as np
+
 class Race():
-    
     def __init__(self, time: int, distance_record: int) -> None:
         self.time = time
         self.distance_record = distance_record
@@ -12,7 +12,6 @@ class Race():
         x2 = int(np.ceil((time + delta) / 2))
 
         return x2 - x1 - 1
-
 
 if __name__ == "__main__":
     with open("input.txt") as fp:

@@ -1,6 +1,6 @@
 import numpy as np
-class Race():
-    
+
+class Race(): 
     def __init__(self, time: int, distance_record: int) -> None:
         self.time = time
         self.distance_record = distance_record
@@ -9,7 +9,6 @@ class Race():
         holding_times = np.arange(1, self.time)
         distances = holding_times * (self.time - holding_times)
         return np.sum(distances > self.distance_record)
-
 
 if __name__ == "__main__":
     with open("input.txt") as fp:
