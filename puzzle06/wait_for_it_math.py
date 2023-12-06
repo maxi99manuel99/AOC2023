@@ -5,7 +5,13 @@ class Race():
         self.time = time
         self.distance_record = distance_record
 
-    def calculate_number_ways_to_beat(self):
+    def calculate_number_ways_to_beat(self) -> int:
+        """
+        Calculates the ways to beat the race using the quadratic equation
+        0 = holding_time^2 - holding_times*self.time + self.distance_record
+        The number of ints between x2 and x1 will be the amount of ways to beat 
+        the self.distance_record
+        """
         delta = np.sqrt((self.time**2 - 4*self.distance_record))
 
         x1 = int(np.floor((time - delta) / 2))

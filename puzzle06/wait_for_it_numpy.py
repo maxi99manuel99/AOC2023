@@ -5,7 +5,11 @@ class Race():
         self.time = time
         self.distance_record = distance_record
 
-    def calculate_number_ways_to_beat(self):
+    def calculate_number_ways_to_beat(self) -> int:
+        """
+        Tests all possible_holding times in a brute-force manner using numpy,
+        to get the number of possible ways to beat the self.distance_record
+        """
         holding_times = np.arange(1, self.time)
         distances = holding_times * (self.time - holding_times)
         return np.sum(distances > self.distance_record)
