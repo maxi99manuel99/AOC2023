@@ -54,7 +54,7 @@ class CamelHand():
         counts[best_convertion_idx] += J_count
         return card_values, counts
 
-    def initialize_primary_score(self):
+    def initialize_primary_score(self) -> None:
         """
         Calculates the primary score of this hand by using the function replace_J_optimal to replace
         the Joker J and counting occurances of unique card types
@@ -91,7 +91,7 @@ class CamelHand():
         else:
             self.primary_score = self.SCORES.HIGH_CARD
 
-    def initialize_secondary_score(self):
+    def initialize_secondary_score(self) -> None:
         """
         Initializes the secondary score of this hand which is based on the 
         card value at every position of this hand
