@@ -42,12 +42,9 @@ class CamelHand():
         :param card_values: The card values before replacement
         :param counts: The counts before replacement
         """
-        for i, count_and_value in enumerate(zip(card_values, counts)):
-            if count_and_value[0] == "J":
-                J_idx = i
-                J_count = count_and_value[1]
-                break
-        
+        J_idx = card_values.index("J")
+        J_count = counts[J_idx]
+
         del card_values[J_idx]
         del counts[J_idx]
         
@@ -64,6 +61,7 @@ class CamelHand():
         """
         before_card_values, before_counts = np.unique(
                 self.hand, return_counts=True)
+        
         if "J" in self.hand and len(before_counts) != 1:
             _, counts = self.replace_J_optimal(
                 list(before_card_values), list(before_counts))
