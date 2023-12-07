@@ -38,7 +38,7 @@ class CamelHand():
         if self.primary_score.value != other.primary_score.value:
             return self.primary_score.value < other.primary_score.value
         else:
-            return self.secondary_score <= other.secondary_score
+            return self.secondary_score < other.secondary_score
 
     def initialize_primary_score(self) -> None:
         """

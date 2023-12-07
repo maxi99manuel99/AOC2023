@@ -38,7 +38,7 @@ class CamelHand():
         if self.primary_score.value != other.primary_score.value:
             return self.primary_score.value < other.primary_score.value
         else:
-            return self.secondary_score <= other.secondary_score
+            return self.secondary_score < other.secondary_score
 
     def replace_J_optimal(self, card_values: list[int], counts: list[int]) -> tuple[list[int], list[int]]:
         """
