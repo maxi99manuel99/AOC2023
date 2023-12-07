@@ -97,12 +97,15 @@ class CamelHand():
         card value at every position of this hand
         """
         hand = [self.char_to_int[card] for card in self.hand]
-        # use weights that ensure that a hand with a bigger value at pos 0
-        # will always win over all hands with lower values at pos 0
-        # same goes for pos 1, 2, 3, 4
-        weights = [100000, 1000, 10, 0.1, 0.001, 0.00001]
-        self.secondary_score = sum(
-            val * weight for val, weight in zip(hand, weights))
+        # by multiplying all values at their positions in the reversely
+        # ordered list with 10^(*2) we ensure that a hand with a 
+        # bigger value at pos 0 will always win over all hands with 
+        # lower values at pos 0. Same goes for pos 1, 2, 3, 4
+        score = 0
+        for i, value in enumerate(hand[::-1]):
+            score += value * pow(10, i*2)
+
+        self.secondary_score = score
 
 
 def calculate_winnings_sum(hands: list[CamelHand]) -> int:
