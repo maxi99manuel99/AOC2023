@@ -34,6 +34,12 @@ class CamelHand():
         self.initialize_secondary_score()
         self.bid = bid
 
+    def __lt__(self, other) -> bool:
+        if self.primary_score.value != other.primary_score.value:
+            return self.primary_score.value < other.primary_score.value
+        else:
+            return self.secondary_score <= other.secondary_score
+
     def initialize_primary_score(self) -> None:
         """
         Calculates the primary score of this hand by counting occurances of 
@@ -86,10 +92,10 @@ def calculate_winnings_sum(hands: list[CamelHand]) -> int:
 
     :param hands: contains the hands to determine the winnings of
     """
-    sorted_hands = sorted(hands, key=lambda x: (
-        x.primary_score.value, x.secondary_score))
+    hands.sort()  
+    
     bid_sum = 0
-    for i, hand in enumerate(sorted_hands):
+    for i, hand in enumerate(hands):
         bid_sum += (i+1)*hand.bid
 
     return bid_sum
