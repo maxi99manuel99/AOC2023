@@ -29,7 +29,7 @@ class CamelHand():
     }
 
     def __init__(self, hand: str, bid: int) -> None:
-        self.hand = np.array([*hand])
+        self.hand = [*hand]
         self.initialize_primary_score()
         self.initialize_secondary_score()
         self.bid = bid
