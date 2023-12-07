@@ -12,7 +12,7 @@ class CamelHand():
         ONE_PAIR = 2
         HIGH_CARD = 1
 
-    char_to_int = {
+    card_to_value = {
         "2": 2,
         "3": 3,
         "4": 4,
@@ -68,14 +68,13 @@ class CamelHand():
         Initializes the secondary score of this hand which is based on the 
         card value at every position of this hand
         """
-        hand = [self.char_to_int[card] for card in self.hand]
         # by multiplying all values at their positions in the reversely
         # ordered list with 10^(*2) we ensure that a hand with a 
         # bigger value at pos 0 will always win over all hands with 
         # lower values at pos 0. Same goes for pos 1, 2, 3, 4
         score = 0
-        for i, value in enumerate(hand[::-1]):
-            score += value * pow(10, i*2)
+        for i, card in enumerate(hand[::-1]):
+            score += self.card_to_value[card] * pow(10, i*2)
 
         self.secondary_score = score
 
