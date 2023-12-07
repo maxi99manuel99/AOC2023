@@ -59,6 +59,7 @@ class CamelHand():
 
         elif n_unique_cards == 4:
             self.primary_score = self.SCORES.ONE_PAIR
+        
         else:
             self.primary_score = self.SCORES.HIGH_CARD
 
@@ -88,14 +89,17 @@ def calculate_winnings_sum(hands: list[CamelHand]) -> int:
     bid_sum = 0
     for i, hand in enumerate(sorted_hands):
         bid_sum += (i+1)*hand.bid
+    
     return bid_sum
 
 
 if __name__ == "__main__":
     all_hands: list[CamelHand] = []
+    
     with open("input.txt") as fp:
         while line := fp.readline():
             hand, bid = line.split()
             bid = int(bid)
             all_hands.append(CamelHand(hand, bid))
+    
     print(f"Part 1 Result: {calculate_winnings_sum(all_hands)}")
