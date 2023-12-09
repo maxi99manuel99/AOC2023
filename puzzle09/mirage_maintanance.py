@@ -26,7 +26,7 @@ class HistoryAnalyser():
         """
         Extrapolates and returns the previous value of the sequence 
         by substracting from the first value of each sequence in the
-        sequence tree starting from the leaf sequence
+        sequence "tree" starting from the leaf sequence
         """
         current_sub = 0
         for seq in reversed(self.sequences):
