@@ -19,11 +19,10 @@ def count_steps_to_goal(start: str, goal: str, instruction_string: str, node_dic
                 contains "L" for left and "R" for right
     :param node_dict: contains all nodes and their as keys and their neighbors als values
     """
-    found = False
     steps = 0
     current_node = start
     slice_goal = -1 if len(goal) == 1 else 0
-    while not found:
+    while True:
         for instruction in instruction_string:
             if current_node[slice_goal:] == goal:
                 return steps
