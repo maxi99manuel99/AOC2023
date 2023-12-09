@@ -4,10 +4,10 @@ class HistoryAnalyser():
 
     def build_seuqence_tree(self) -> None:
         """
-        creates new sequences in a tree like manner,
+        creates new sequences in a tree like manner from leafs to root,
         by taking the difference of each neighboring pair in each sequence
-        to create a new sequence until the all the leafs are zero
-        (actual data structure is just a list of sequences)
+        to create a new sequence until we have a level with root nodes that are
+        all zero (actual data structure is just a list of sequences)
         """
         curr_sequence = self.sequences[0]
 
@@ -26,7 +26,7 @@ class HistoryAnalyser():
         """
         Extrapolates and returns the previous value of the sequence 
         by substracting from the first value of each sequence in the
-        sequence "tree" starting from the leaf sequence
+        sequence "tree" starting from the root sequence
         """
         current_sub = 0
         for seq in reversed(self.sequences):
