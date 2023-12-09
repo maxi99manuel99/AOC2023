@@ -14,31 +14,24 @@ class HistoryAnalyser():
         while not all(x == 0 for x in curr_sequence):
             curr_sequence = [(curr_sequence[i+1] - curr_sequence[i]) for i in range(len(curr_sequence)-1)]
             self.sequences.append(curr_sequence)
-        
 
     def predict_next_value(self) -> int:
         """
-        Extrapolates and returns the next value of a sequence by starting from
-        the bottom of the sequence "tree" and adding up sequence values
+        Extrapolates and returns the next value of the sequence 
+        by adding the last values of each sequence in the sequence "tree"
         """
-        reversed_sequences = list(reversed(self.sequences))
-        reversed_sequences[0].append(0)
-        for i, seq in enumerate(reversed_sequences[1:]):
-            reversed_sequences[i+1].append(seq[-1] + reversed_sequences[i][-1])
-
-        return reversed_sequences[-1][-1]
+        return sum(seq[-1] for seq in self.sequences)
     
     def predict_previous_value(self) -> int:
         """
-        Extrapolates and returns the previous value of a sequence by starting from
-        the bottom of the sequence "tree" and substracting sequence values
+        Extrapolates and returns the previous value of the sequence 
+        by substracting from the first value of each sequence in the
+        reversed sequence "tree"
         """
-        reversed_sequences = list(reversed(self.sequences))
-        reversed_sequences[0].append(0)
-        for i, seq in enumerate(reversed_sequences[1:]):
-            reversed_sequences[i+1].insert(0, seq[0] - reversed_sequences[i][0])
-       
-        return reversed_sequences[-1][0]
+        current_sub = 0
+        for seq in reversed(self.sequences):
+            current_sub = seq[0] - current_sub
+        return current_sub
 
 if __name__ == "__main__":
     sum_pred_next_values = 0
