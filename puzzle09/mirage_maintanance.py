@@ -2,7 +2,13 @@ class HistoryAnalyser():
     def __init__(self, start_sequence: list[int]) -> None:
         self.sequences = [start_sequence]
 
-    def build_seuqence_tree(self):
+    def build_seuqence_tree(self) -> None:
+        """
+        creates new sequences in a tree like manner,
+        by taking the difference of each neighboring pair in each sequence
+        to create a new sequence until the all the leafs are zero
+        (actual data structure is just a list of sequences)
+        """
         curr_sequence = self.sequences[0]
 
         while not all(x == 0 for x in curr_sequence):
@@ -11,6 +17,10 @@ class HistoryAnalyser():
         
 
     def predict_next_value(self) -> int:
+        """
+        Extrapolates and returns the next value of a sequence by starting from
+        the bottom of the sequence "tree" and adding up sequence values
+        """
         reversed_sequences = list(reversed(self.sequences))
         reversed_sequences[0].append(0)
         for i, seq in enumerate(reversed_sequences[1:]):
@@ -19,6 +29,10 @@ class HistoryAnalyser():
         return reversed_sequences[-1][-1]
     
     def predict_previous_value(self) -> int:
+        """
+        Extrapolates and returns the previous value of a sequence by starting from
+        the bottom of the sequence "tree" and substracting sequence values
+        """
         reversed_sequences = list(reversed(self.sequences))
         reversed_sequences[0].append(0)
         for i, seq in enumerate(reversed_sequences[1:]):
@@ -37,6 +51,6 @@ if __name__ == "__main__":
             history_analyser.build_seuqence_tree()
             sum_pred_next_values += history_analyser.predict_next_value()
             sum_pred_previous_values += history_analyser.predict_previous_value()
-            
+
     print(f"Part 1 Result: {sum_pred_next_values}")
     print(f"Part 2 Result: {sum_pred_previous_values}")
