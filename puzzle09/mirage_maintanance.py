@@ -4,10 +4,11 @@ class HistoryAnalyser():
 
     def build_seuqence_tree(self) -> None:
         """
-        creates new sequences in a tree like manner from leafs to root,
-        by taking the difference of each neighboring pair in each sequence
-        to create a new sequence until we have a level with root nodes that are
-        all zero (actual data structure is just a list of sequences)
+        Creates new sequences in a  binary tree like manner in reverse order
+        from leafs to root. A child is calculated by the difference of each neighboring pair
+        in a sequence. By doing this for all pairs we get a new child sequence.
+        This is done until we have a sequence with only zero nodes, which are then the roots
+        (actual data structure is just a list of sequences)
         """
         curr_sequence = self.sequences[0]
 
