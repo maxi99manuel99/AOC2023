@@ -16,7 +16,7 @@ class PipeMap():
     direction_to_idx_change = {
         "top": (-1, 0),
         "bot": (+1, 0),
-        "right": (0, 1),
+        "right": (0, +1),
         "left": (0, -1)
     }
 
