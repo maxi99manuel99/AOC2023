@@ -1,7 +1,6 @@
 from enum import Enum
 import numpy as np
 
-
 class PipeMap():
 
     char_to_pipe = {
@@ -30,7 +29,7 @@ class PipeMap():
     def __init__(self, map: list, start_point: tuple[int, int]) -> None:
         self.map = np.array(map)
         self.start = start_point
-        self.loop = None
+        self.loop_map = np.zeros_like(self.map, dtype=bool)
 
     def get_valid_next_directions(self, tile_position: tuple[int, int]) -> list[str]:
         """
@@ -63,8 +62,9 @@ class PipeMap():
 
     def initialize_loop(self) -> None:
         """
-        Saves all positions on the loop from start to start in this
-        PipeMap in the loop variable of this class
+        Calculates all positions of the loop from start to start in this PipeMap and 
+        initializes loop_map, which is a map of bools, where True means that this tile
+        is part of the loop
         """
         valid_directions = self.get_valid_next_directions(self.start)
         self.map[self.start[0], self.start[1]] = list(self.char_to_pipe.keys())[list(
@@ -73,7 +73,8 @@ class PipeMap():
         idx_plus = self.direction_to_idx_change[last_direction]
 
         pos = (self.start[0] + idx_plus[0], self.start[1] + idx_plus[1])
-        self.loop = [self.start, pos]
+        self.loop_map[self.start] = True
+        self.loop_map[pos] = True
 
         while pos != self.start:
             pipe = self.char_to_pipe[self.map[pos[0]][pos[1]]]
@@ -86,7 +87,7 @@ class PipeMap():
             idx_plus = self.direction_to_idx_change[next_direction]
             pos = (pos[0] + idx_plus[0], pos[1] + idx_plus[1])
 
-            self.loop.append(pos)
+            self.loop_map[pos] = True
             last_direction = next_direction
 
     def is_tile_inside_loop(self, tile_position: tuple[int, int]) -> bool:
@@ -112,10 +113,10 @@ class PipeMap():
                     elif edge_start == "J" and pipe == "F":
                         intersections += 1
 
-            elif pipe == "|" and ((row, col) in self.loop):
+            elif pipe == "|" and self.loop_map[row][col]:
                 intersections += 1
 
-            elif (pipe == "7" or pipe == "J") and ((row, col) in self.loop):
+            elif (pipe == "7" or pipe == "J") and self.loop_map[row][col]:
                 edge_start = pipe
                 currently_on_edge = True
 
@@ -126,14 +127,14 @@ class PipeMap():
     def calculate_num_tiles_inside_loop(self) -> int:
         """
         Returns the number of tiles in this PipeMap that are enclosed 
-        in the loop of this PipeMap
+        in its loop
         """
-        min_row, max_row = min(self.loop, key=lambda x: x[0])[0], max(self.loop, key=lambda x: x[0])[0]
-        min_col, max_col = min(self.loop, key=lambda x: x[1])[1], max(self.loop, key=lambda x: x[1])[1]
-        points_to_test = [(row, col) for row in range(min_row+1, max_row)
-                          for col in range(min_col+1, max_col)]
+        height, width = self.map.shape
 
-        return sum(self.is_tile_inside_loop(point) for point in points_to_test if point not in self.loop)
+        points_to_test = [(row, col) for row in range(height) for col in range(
+            width) if not self.loop_map[row, col]]
+        
+        return sum(self.is_tile_inside_loop(point) for point in points_to_test)
 
 
 if __name__ == "__main__":
@@ -149,5 +150,5 @@ if __name__ == "__main__":
 
         map = PipeMap(map, start_point)
         loop = map.initialize_loop()
-        print(f"Part 1 Result: {(len(map.loop)) // 2}")
+        print(f"Part 1 Result: {(np.count_nonzero(map.loop_map)) // 2}")
         print(f"Part 2 Result: {map.calculate_num_tiles_inside_loop()}")
