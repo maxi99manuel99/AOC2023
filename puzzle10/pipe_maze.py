@@ -61,7 +61,7 @@ class PipeMap():
 
         return valid_directions
 
-    def get_loop(self) -> None:
+    def initialize_loop(self) -> None:
         """
         Saves all positions on the loop from start to start in this
         PipeMap in the loop variable of this class
@@ -148,6 +148,6 @@ if __name__ == "__main__":
             row += 1
 
         map = PipeMap(map, start_point)
-        loop = map.get_loop()
+        loop = map.initialize_loop()
         print(f"Part 1 Result: {(len(map.loop)) // 2}")
         print(f"Part 2 Result: {map.calculate_num_tiles_inside_loop()}")
