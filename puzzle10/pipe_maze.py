@@ -128,10 +128,8 @@ class PipeMap():
         Returns the number of tiles in this PipeMap that are enclosed 
         in the loop of this PipeMap
         """
-        min_row, max_row = min(self.loop, key=lambda x: x[0])[
-            0], max(self.loop, key=lambda x: x[0])[0]
-        min_col, max_col = min(self.loop, key=lambda x: x[1])[
-            1], max(self.loop, key=lambda x: x[1])[1]
+        min_row, max_row = min(self.loop, key=lambda x: x[0])[0], max(self.loop, key=lambda x: x[0])[0]
+        min_col, max_col = min(self.loop, key=lambda x: x[1])[1], max(self.loop, key=lambda x: x[1])[1]
         points_to_test = [(row, col) for row in range(min_row+1, max_row)
                           for col in range(min_col+1, max_col)]
 
