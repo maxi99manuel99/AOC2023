@@ -97,12 +97,12 @@ class PipeMap():
 
         :param tile: The position of the tile that we want to check
         """
-        row_pos, col_pos = tile_position
+        row, col = tile_position
         intersections = 0
         currently_on_edge = False
 
-        while col_pos >= 0:
-            pipe = self.map[row_pos][col_pos]
+        while col >= 0:
+            pipe = self.map[row][col]
 
             if currently_on_edge:
                 if pipe == "F" or pipe == "L":
@@ -112,14 +112,14 @@ class PipeMap():
                     elif edge_start == "J" and pipe == "F":
                         intersections += 1
 
-            elif pipe == "|" and ((row_pos, col_pos) in self.loop):
+            elif pipe == "|" and ((row, col) in self.loop):
                 intersections += 1
 
-            elif (pipe == "7" or pipe == "J") and ((row_pos, col_pos) in self.loop):
+            elif (pipe == "7" or pipe == "J") and ((row, col) in self.loop):
                 edge_start = pipe
                 currently_on_edge = True
 
-            col_pos -= 1
+            col -= 1
 
         return intersections % 2 != 0
 
