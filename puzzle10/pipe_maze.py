@@ -91,16 +91,18 @@ class PipeMap():
 
     def is_tile_inside_loop(self, tile_position: tuple[int, int]) -> bool:
         """
-        Checks if a tile is enclosed by the loop of this PipeMap
+        Checks if a tile is enclosed by the loop of this PipeMap by sending a 
+        ray from the tile to the left and counting the intersections with
+        the loop
 
         :param tile: The position of the tile that we want to check
         """
-        curr_pos = (tile_position[0], tile_position[1]-1)
+        row_pos, col_pos = tile_position
         intersections = 0
         currently_on_edge = False
 
-        while curr_pos[1] >= 0:
-            pipe = self.map[curr_pos[0], curr_pos[1]]
+        while col_pos >= 0:
+            pipe = self.map[row_pos][col_pos]
 
             if currently_on_edge:
                 if pipe == "F" or pipe == "L":
@@ -110,14 +112,14 @@ class PipeMap():
                     elif edge_start == "J" and pipe == "F":
                         intersections += 1
 
-            elif pipe == "|" and (curr_pos in self.loop):
+            elif pipe == "|" and ((row_pos, col_pos) in self.loop):
                 intersections += 1
 
-            elif (pipe == "7" or pipe == "J") and (curr_pos in self.loop):
+            elif (pipe == "7" or pipe == "J") and ((row_pos, col_pos) in self.loop):
                 edge_start = pipe
                 currently_on_edge = True
 
-            curr_pos = (curr_pos[0], curr_pos[1]-1)
+            col_pos -= 1
 
         return intersections % 2 != 0
 
