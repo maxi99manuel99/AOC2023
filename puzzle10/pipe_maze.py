@@ -113,7 +113,7 @@ class PipeMap():
             elif pipe == "|" and (curr_pos in self.loop):
                 intersections += 1
 
-            if (pipe == "7" or pipe == "J") and (curr_pos in self.loop):
+            elif (pipe == "7" or pipe == "J") and (curr_pos in self.loop):
                 edge_start = pipe
                 currently_on_edge = True
 
