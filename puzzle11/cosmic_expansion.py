@@ -17,14 +17,14 @@ class Map():
         
         for i in range(rows):
             if not "#" in map[i]:
-                for j, galaxy in enumerate(old_galaxies):
-                    if galaxy[0] > i:
+                for j, old_galaxy in enumerate(old_galaxies):
+                    if old_galaxy[0] > i:
                         self.galaxy_indices[j] = (self.galaxy_indices[j][0]+(empty_multiplier-1), self.galaxy_indices[j][1])
 
         for i in range(cols):
             if not "#" in map[:, i]:
-                for j, galaxy in enumerate(old_galaxies):
-                    if galaxy[1] > i:
+                for j, old_galaxy in enumerate(old_galaxies):
+                    if old_galaxy[1] > i:
                         self.galaxy_indices[j] = (self.galaxy_indices[j][0], self.galaxy_indices[j][1]+(empty_multiplier-1))      
     
     def calculate_sum_shortest_paths(self) -> int:
