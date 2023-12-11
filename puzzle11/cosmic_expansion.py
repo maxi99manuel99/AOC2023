@@ -8,6 +8,7 @@ class Map():
     def expand(self, empty_multiplier: int) -> None:
         """
         Calculates the new indices of all galaxies, if the map were to be extended
+        by replacing rows with no galaxies with empty_multiplier times the empty row
 
         :param empty_multiplier: defines how many new rows/cols arise from an empty row/col
         """
