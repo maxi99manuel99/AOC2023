@@ -14,6 +14,7 @@ class Map():
         map = np.array(self.map)
         rows, cols = map.shape
         old_galaxies = self.galaxy_indices.copy()
+        
         for i in range(rows):
             if not "#" in map[i]:
                 for j, galaxy in enumerate(old_galaxies):
@@ -35,6 +36,7 @@ class Map():
         for i, (y, x) in enumerate(self.galaxy_indices[:-1]):
             for (y2, x2) in self.galaxy_indices[i+1:]:
                 sum += abs(y - y2) + abs(x - x2)
+        
         return sum
 
 
