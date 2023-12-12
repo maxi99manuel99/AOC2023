@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class Map():
     def __init__(self, map: list[list[str]]) -> None:
         self.map = map
@@ -15,19 +16,17 @@ class Map():
         map = np.array(self.map)
         rows, cols = map.shape
         old_galaxies = self.galaxy_indices.copy()
-        
+
         for i in range(rows):
             if not "#" in map[i]:
-                for j, old_galaxy in enumerate(old_galaxies):
-                    if old_galaxy[0] > i:
-                        self.galaxy_indices[j] = (self.galaxy_indices[j][0]+(empty_multiplier-1), self.galaxy_indices[j][1])
+                self.galaxy_indices = [((idx[0]+(empty_multiplier-1), idx[1]) if old_idx[0] > i else idx)
+                                       for idx, old_idx in zip(self.galaxy_indices, old_galaxies)]
 
         for i in range(cols):
             if not "#" in map[:, i]:
-                for j, old_galaxy in enumerate(old_galaxies):
-                    if old_galaxy[1] > i:
-                        self.galaxy_indices[j] = (self.galaxy_indices[j][0], self.galaxy_indices[j][1]+(empty_multiplier-1))      
-    
+                self.galaxy_indices = [((idx[0], idx[1]+(empty_multiplier-1)) if old_idx[1] > i else idx)
+                                       for idx, old_idx in zip(self.galaxy_indices, old_galaxies)]
+
     def calculate_sum_shortest_paths(self) -> int:
         """
         Returns the sum of the manhattan distance of all pairs
@@ -37,7 +36,7 @@ class Map():
         for i, (y, x) in enumerate(self.galaxy_indices[:-1]):
             for (y2, x2) in self.galaxy_indices[i+1:]:
                 sum += abs(y - y2) + abs(x - x2)
-        
+
         return sum
 
 
@@ -53,4 +52,3 @@ if __name__ == "__main__":
     map2 = Map(map)
     map2.expand(1000000)
     print(f"Part 2 Result: {map2.calculate_sum_shortest_paths()}")
-            
