@@ -42,7 +42,7 @@ def count_valid_arrangements(springs: str, groups: tuple[int]) -> int:
 
 
 if __name__ == "__main__":
-    with open("sample") as fp:
+    with open("input.txt") as fp:
         total_arrangements = 0
         total_arrangements_unfolded = 0
 
