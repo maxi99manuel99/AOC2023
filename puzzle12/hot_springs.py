@@ -11,16 +11,14 @@ def get_remains_from_possible_positions(springs: str, group: int):
     """
     remaining_springs = []
     i = 0
-    stop_first_hash = False
-    while i < len(springs)-group:
-        if stop_first_hash:
-            break
-
+    found_first_hashtag = False
+    while i < len(springs)-group and not found_first_hashtag:
+        if springs[i] == "#":
+            found_first_hashtag = True
+        
         if springs[i] == "." or springs[i+group] == "#" or (i != 0 and springs[i-1] == "#"):
             i += 1
             continue
-        elif springs[i] == "#":
-            stop_first_hash = True
 
         match = True
         for j in range(i, i+group):
@@ -29,8 +27,6 @@ def get_remains_from_possible_positions(springs: str, group: int):
                 break
 
         if match:
-            if "#" in springs[:i]:
-                break
             remaining_springs.append(springs[i+group+1:])
         
         i += 1
