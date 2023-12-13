@@ -3,7 +3,7 @@ from functools import cache
 
 def get_remains_from_possible_positions(springs: str, group: int):
     """
-    Finds possible positions for a group of given size and returns the remaining springs
+    Finds possible positions for a group of given size and returns the remaining spring string
     if a group were to be placed at that position
 
     :param springs: The spring string in which we want to find possible positions for our group
@@ -11,22 +11,28 @@ def get_remains_from_possible_positions(springs: str, group: int):
     """
     remaining_springs = []
     i = 0
-
+    stop_first_hash = False
     while i < len(springs)-group:
-        if springs[i+group] == "#" or (i != 0 and springs[i-1] == "#"):
+        if stop_first_hash:
+            break
+
+        if springs[i] == "." or springs[i+group] == "#" or (i != 0 and springs[i-1] == "#"):
             i += 1
             continue
+        elif springs[i] == "#":
+            stop_first_hash = True
 
         match = True
         for j in range(i, i+group):
             if springs[j] == ".":
                 match = False
                 break
-        
+
         if match:
             if "#" in springs[:i]:
                 break
             remaining_springs.append(springs[i+group+1:])
+        
         i += 1
 
     return remaining_springs
