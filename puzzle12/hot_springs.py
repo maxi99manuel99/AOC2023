@@ -11,24 +11,11 @@ def get_remains_from_possible_positions(springs: str, group: int):
     """
     remaining_springs = []
     i = 0
-    found_first_hashtag = False
-    while i < len(springs)-group and not found_first_hashtag:
-        if springs[i] == "#":
-            found_first_hashtag = True
-        
-        if springs[i] == "." or springs[i+group] == "#" or (i != 0 and springs[i-1] == "#"):
-            i += 1
-            continue
-
-        match = True
-        for j in range(i, i+group):
-            if springs[j] == ".":
-                match = False
-                break
-
-        if match:
+    while i < len(springs)-group:
+        if "." not in springs[i:i+group] and springs[i+group] != "#":
             remaining_springs.append(springs[i+group+1:])
-        
+        if springs[i] == "#":
+            break
         i += 1
 
     return remaining_springs
@@ -55,7 +42,7 @@ def count_valid_arrangements(springs: str, groups: tuple[int]) -> int:
 
 
 if __name__ == "__main__":
-    with open("input.txt") as fp:
+    with open("sample") as fp:
         total_arrangements = 0
         total_arrangements_unfolded = 0
 
