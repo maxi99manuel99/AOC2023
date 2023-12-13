@@ -10,15 +10,12 @@ def get_remains_from_possible_positions(springs: str, group: int):
     :param group: the size of the group we want to find positions for
     """
     remaining_springs = []
-    i = 0
-    while i < len(springs)-group:
+    for i in range(len(springs)-group):
         if "." not in springs[i:i+group] and springs[i+group] != "#":
             remaining_springs.append(springs[i+group+1:])
         
         if springs[i] == "#":
             break
-        
-        i += 1
 
     return remaining_springs
 
