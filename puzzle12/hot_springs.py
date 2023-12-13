@@ -14,8 +14,10 @@ def get_remains_from_possible_positions(springs: str, group: int):
     while i < len(springs)-group:
         if "." not in springs[i:i+group] and springs[i+group] != "#":
             remaining_springs.append(springs[i+group+1:])
+        
         if springs[i] == "#":
             break
+        
         i += 1
 
     return remaining_springs
