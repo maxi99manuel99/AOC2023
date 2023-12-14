@@ -114,6 +114,7 @@ class ReflectorDish():
         known_rock_positions = {}
         rock_positions = tuple(sorted((rock_positions)))
         cycle_start = 0
+        cycle_start_rocks = None
         
         for i in range(n):
             if rock_positions in known_rock_positions:
@@ -128,15 +129,16 @@ class ReflectorDish():
                 known_rock_positions[rock_positions] = new_rock_positions
                 rock_positions = new_rock_positions
         
-        cycle_len = 1
-        curr_rocks = known_rock_positions[cycle_start_rocks]
-        while curr_rocks != cycle_start_rocks:
-            curr_rocks = known_rock_positions[curr_rocks]
-            cycle_len += 1
-        
-        steps_left = (n - cycle_start) % cycle_len
-        for j in range(steps_left):
-            rock_positions = known_rock_positions[rock_positions]
+        if cycle_start_rocks:
+            cycle_len = 1
+            curr_rocks = known_rock_positions[cycle_start_rocks]
+            while curr_rocks != cycle_start_rocks:
+                curr_rocks = known_rock_positions[curr_rocks]
+                cycle_len += 1
+            
+            steps_left = (n - cycle_start) % cycle_len
+            for j in range(steps_left):
+                rock_positions = known_rock_positions[rock_positions]
       
         return rock_positions
 
