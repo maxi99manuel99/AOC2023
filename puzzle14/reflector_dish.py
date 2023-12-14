@@ -145,8 +145,8 @@ class ReflectorDish():
                 curr_rocks = known_rock_positions[curr_rocks]
                 cycle_len += 1
             
-            steps_left = (n - cycle_start) % cycle_len
-            for j in range(steps_left):
+            remaining_steps = (n - cycle_start) % cycle_len
+            for i in range(remaining_steps):
                 rock_positions = known_rock_positions[rock_positions]
       
         return rock_positions
@@ -174,4 +174,3 @@ if __name__ == "__main__":
         p1_load, p2_load = reflector_dish.execute_tiling_and_get_loads()
         print(f"Part 1 Result: {p1_load}")
         print(f"Part 2 Result: {p2_load}")
-    
