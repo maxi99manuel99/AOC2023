@@ -126,17 +126,17 @@ if __name__ == "__main__":
     patterns = []
     with open("input.txt") as fp:
         rows = []
-        cols = []
         while line:= fp.readline():
             if line in ['\n', '\r\n']:
+                cols = list(map(list, zip(*rows)))
                 cols = ["".join(col) for col in cols]
                 patterns.append(Pattern(rows, cols))
                 rows = []
-                cols = []
             else:
                 line = line.strip()
                 rows.append(line)
-                cols = list(map(list, zip(*rows)))
+        
+        cols = list(map(list, zip(*rows)))
         cols = ["".join(col) for col in cols]
         patterns.append(Pattern(rows, cols))
         sum, sum_smudge = reflections_sum(patterns)
