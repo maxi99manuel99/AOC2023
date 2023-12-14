@@ -47,7 +47,7 @@ class ReflectorDish():
         to the next "#" or the end of the platform in that direction. Returns the position of the rocks after 
         tiling
 
-        :param rock_positions: The rock positions before tiling
+        :param rock_positions: The rock positions before tiling. Each position consits of (row, col)
         :param direction: should be "top", "left", "right", "bot". Determins the tile direction
         """
         new_rock_positions = []
@@ -109,7 +109,7 @@ class ReflectorDish():
         runtime
 
         :param n: The amount of times to repeat the cycle
-        :param rock_positions: The positions of the rocks before tiling
+        :param rock_positions: The positions of the rocks before tiling. Each position consits of (row, col)
         """
         known_rock_positions = {}
         rock_positions = tuple(sorted((rock_positions)))
@@ -145,7 +145,8 @@ class ReflectorDish():
         Returns the total load on the north boundary by summing up all the loads
         of the rocks, where the load of one rock is determined by its distance to the south boundary
 
-        :param rock_positions: The positions of the rocks, that determine the total load
+        :param rock_positions: The positions of the rocks, that determine the total load.
+                               Each position consits of (row, col)
         """
         load = 0
         for pos in rock_positions:
