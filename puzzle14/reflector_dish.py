@@ -8,11 +8,20 @@ class ReflectorDish():
         self.col_boundaries = self.get_col_boundaries()
         self.rock_positions = np.where(self.map == "O")
         self.rock_positions = tuple([((idx1, idx2)) for idx1, idx2 in zip(self.rock_positions[0], self.rock_positions[1])])
+    
+    def execute_tiling_and_get_loads(self) -> tuple[int, int]:
+        """
+        Executes tiling to the north and returns the resulting load on the north boundary,
+        and executes 1000000000 spin cycles, again returning the respective load on the north boundary
+        after these
+        """
         new_rock_positions_p1 = self.tile(self.rock_positions, "top")
-        self.load_north_p1 =  self.calc_load_on_north(new_rock_positions_p1)
+        load_north_p1 =  self.calc_load_on_north(new_rock_positions_p1)
         new_rock_positions_p2 = self.cycle_n_times(1000000000, self.rock_positions)
-        self.load_north_p2 = self.calc_load_on_north(new_rock_positions_p2)
-
+        load_north_p2 = self.calc_load_on_north(new_rock_positions_p2)
+        
+        return load_north_p1, load_north_p2
+    
     def get_row_boundaries(self) -> list[list[int]]:
         """
         Returns a matrix where each row of the matrix represents the
@@ -162,6 +171,7 @@ if __name__ == "__main__":
             map.append(list(line.strip()))
 
         reflector_dish = ReflectorDish(map)
-        print(f"Part 1 Result: {reflector_dish.load_north_p1}")
-        print(f"Part 2 Result: {reflector_dish.load_north_p2}")
+        p1_load, p2_load = reflector_dish.execute_tiling_and_get_loads()
+        print(f"Part 1 Result: {p1_load}")
+        print(f"Part 2 Result: {p2_load}")
     
