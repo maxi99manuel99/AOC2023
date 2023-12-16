@@ -20,7 +20,7 @@ class ContraptionMap():
         Starts moving the beam through the map starting from the top left
         moving to the right. Returns a list of all energized fields of the map
         """
-        return self.move_and_energize((0, 0), MOVING_DIRECTION.RIGHT, {})
+        return self.move_and_energize((0, 0), MOVING_DIRECTION.RIGHT, set())
 
     def get_largest_amount_of_energized_tiles(self) -> int:
         """
@@ -30,7 +30,7 @@ class ContraptionMap():
         energized_tiles = []
 
         def calculate_energized_tiles(start_position, moving_direction):
-            return len(self.move_and_energize(start_position, moving_direction, {}))
+            return len(self.move_and_energize(start_position, moving_direction, set()))
 
         with ThreadPoolExecutor() as executor:
             args_list = [
@@ -50,17 +50,17 @@ class ContraptionMap():
 
         return max(energized_tiles)
 
-    def move_and_energize(self, start_tile: tuple[int, int], direction: MOVING_DIRECTION, already_visited_in_direction: dict) -> list[tuple[int, int]]:
+    def move_and_energize(self, start_tile: tuple[int, int], direction: MOVING_DIRECTION, already_visited_in_direction: set) -> list[tuple[int, int]]:
         """
         Recursively moves the beam through the map and returns all fields that are energized on the way
 
         :param start_tile: The tile to start moving from
         :param direction: The direction to move in
-        :param already_visited_in_direction: Contains tuples of tiles and a direction
-                                             from which they were encountered as keys and 
-                                             a bool. Is used to not get stuck moving in a cycle
+        :param already_visited_in_direction: Contains tuples of tiles that were already visited
+                                             and the direction from which they were approached.
+                                             Is used to prevent moving in a cycle
         """
-        if already_visited_in_direction.get((start_tile, direction), False):
+        if  (start_tile, direction) in already_visited_in_direction:
             return []
 
         energized_tiles = []
@@ -72,8 +72,7 @@ class ContraptionMap():
                     return energized_tiles
 
                 energized_tiles.append(curr_tile)
-                already_visited_in_direction[(
-                    curr_tile, direction)] = True
+                already_visited_in_direction.add((curr_tile, direction))
                 tile_state = self.map[curr_tile]
 
                 if tile_state == "|":
@@ -102,8 +101,7 @@ class ContraptionMap():
                     return energized_tiles
 
                 energized_tiles.append(curr_tile)
-                already_visited_in_direction[(
-                    curr_tile, direction)] = True
+                already_visited_in_direction.add((curr_tile, direction))
                 tile_state = self.map[curr_tile]
 
                 if tile_state == "|":
@@ -132,8 +130,7 @@ class ContraptionMap():
                     return energized_tiles
 
                 energized_tiles.append(curr_tile)
-                already_visited_in_direction[(
-                    curr_tile, direction)] = True
+                already_visited_in_direction.add((curr_tile, direction))
                 tile_state = self.map[curr_tile]
 
                 if tile_state == "-":
@@ -162,8 +159,7 @@ class ContraptionMap():
                     return energized_tiles
 
                 energized_tiles.append(curr_tile)
-                already_visited_in_direction[(
-                    curr_tile, direction)] = True
+                already_visited_in_direction.add((curr_tile, direction))
                 tile_state = self.map[curr_tile]
 
                 if tile_state == "-":
