@@ -28,10 +28,11 @@ class ContraptionMap():
         and returns the number of energized tiles by that beam that energizes the most tiles
         """
         energized_tiles = []
+
         def calculate_energized_tiles(start_position, moving_direction):
             return len(self.move_and_energize(start_position, moving_direction, {}))
 
-        with ThreadPoolExecutor() as executor:  
+        with ThreadPoolExecutor() as executor:
             args_list = [
                 ((0, x), MOVING_DIRECTION.BOT) for x in range(self.width)
             ] + [
@@ -42,10 +43,11 @@ class ContraptionMap():
                 ((y, self.width-1), MOVING_DIRECTION.LEFT) for y in range(self.height)
             ]
 
-            futures = [executor.submit(calculate_energized_tiles, *args) for args in args_list]
+            futures = [executor.submit(
+                calculate_energized_tiles, *args) for args in args_list]
 
             energized_tiles = [future.result() for future in futures]
-        
+
         return max(energized_tiles)
 
     def move_and_energize(self, start_tile: tuple[int, int], direction: MOVING_DIRECTION, already_visited_in_direction: dict) -> list[tuple[int, int]]:

@@ -30,17 +30,17 @@ class ContraptionMap():
         for x in range(self.width):
             energized_tiles.append(
                 len(self.move_and_energize((0, x), MOVING_DIRECTION.BOT, {})))
-            
+
             energized_tiles.append(len(self.move_and_energize(
                 (self.height-1, x), MOVING_DIRECTION.TOP, {})))
-        
+
         for y in range(self.height):
             energized_tiles.append(
                 len(self.move_and_energize((y, 0), MOVING_DIRECTION.RIGHT, {})))
-            
+
             energized_tiles.append(len(self.move_and_energize(
                 (y, self.width-1), MOVING_DIRECTION.LEFT, {})))
-        
+
         return max(energized_tiles)
 
     def move_and_energize(self, start_tile: tuple[int, int], direction: MOVING_DIRECTION, already_visited_in_direction: dict) -> list[tuple[int, int]]:
