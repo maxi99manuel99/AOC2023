@@ -13,23 +13,44 @@ class ContraptionMap():
     def __init__(self, map: list[list[str]]) -> None:
         self.map = np.array(map)
         self.height, self.width = self.map.shape
-        self.already_visited_in_direction = {}
 
     def get_energized_tiles(self) -> list[tuple[int, int]]:
         """
         Starts moving the beam through the map starting from the top left
         moving to the right. Returns a list of all energized fields of the map
         """
-        return self.move_and_energize((0, 0), MOVING_DIRECTION.RIGHT)
+        return self.move_and_energize((0, 0), MOVING_DIRECTION.RIGHT, {})
 
-    def move_and_energize(self, start_tile: tuple[int, int], direction: MOVING_DIRECTION) -> list[tuple[int, int]]:
+    def get_largest_amount_of_energized_tiles(self) -> int:
+        """
+        Starts a beam from every tile on the boundary of the map away from the boundary
+        and returns the number of energized tiles by that beam that energizes the most tiles
+        """
+        energized_tiles = []
+        for x in range(self.width):
+            energized_tiles.append(
+                len(self.move_and_energize((0, x), MOVING_DIRECTION.BOT, {})))
+            
+            energized_tiles.append(len(self.move_and_energize(
+                (self.height-1, x), MOVING_DIRECTION.TOP, {})))
+        
+        for y in range(self.height):
+            energized_tiles.append(
+                len(self.move_and_energize((y, 0), MOVING_DIRECTION.RIGHT, {})))
+            
+            energized_tiles.append(len(self.move_and_energize(
+                (y, self.width-1), MOVING_DIRECTION.LEFT, {})))
+        
+        return max(energized_tiles)
+
+    def move_and_energize(self, start_tile: tuple[int, int], direction: MOVING_DIRECTION, already_visited_in_direction: dict) -> list[tuple[int, int]]:
         """
         Recursively moves the beam through the map and returns all fields that are energized on the way
 
         :param start_tile: The tile to start moving from
         :param direction: The direction to move in
         """
-        if self.already_visited_in_direction.get((start_tile, direction), False):
+        if already_visited_in_direction.get((start_tile, direction), False):
             return []
 
         energized_tiles = []
@@ -41,25 +62,25 @@ class ContraptionMap():
                     return energized_tiles
 
                 energized_tiles.append(curr_tile)
-                self.already_visited_in_direction[(
+                already_visited_in_direction[(
                     curr_tile, direction)] = True
                 tile_state = self.map[curr_tile]
-                
+
                 if tile_state == "|":
                     top_energized = self.move_and_energize(
-                        (curr_tile[0]-1, curr_tile[1]), MOVING_DIRECTION.TOP)
+                        (curr_tile[0]-1, curr_tile[1]), MOVING_DIRECTION.TOP, already_visited_in_direction)
                     bot_energized = self.move_and_energize(
-                        (curr_tile[0]+1, curr_tile[1]), MOVING_DIRECTION.BOT)
+                        (curr_tile[0]+1, curr_tile[1]), MOVING_DIRECTION.BOT, already_visited_in_direction)
                     return list(set(energized_tiles + top_energized + bot_energized))
 
                 elif tile_state == "/":
                     bot_energized = self.move_and_energize(
-                        (curr_tile[0]+1, curr_tile[1]), MOVING_DIRECTION.BOT)
+                        (curr_tile[0]+1, curr_tile[1]), MOVING_DIRECTION.BOT, already_visited_in_direction)
                     return list(set(energized_tiles + bot_energized))
 
                 elif tile_state == "\\":
                     top_energized = self.move_and_energize(
-                        (curr_tile[0]-1, curr_tile[1]), MOVING_DIRECTION.TOP)
+                        (curr_tile[0]-1, curr_tile[1]), MOVING_DIRECTION.TOP, already_visited_in_direction)
                     return list(set(energized_tiles + top_energized))
 
                 else:
@@ -71,25 +92,25 @@ class ContraptionMap():
                     return energized_tiles
 
                 energized_tiles.append(curr_tile)
-                self.already_visited_in_direction[(
+                already_visited_in_direction[(
                     curr_tile, direction)] = True
                 tile_state = self.map[curr_tile]
-                
+
                 if tile_state == "|":
                     top_energized = self.move_and_energize(
-                        (curr_tile[0]-1, curr_tile[1]), MOVING_DIRECTION.TOP)
+                        (curr_tile[0]-1, curr_tile[1]), MOVING_DIRECTION.TOP, already_visited_in_direction)
                     bot_energized = self.move_and_energize(
-                        (curr_tile[0]+1, curr_tile[1]), MOVING_DIRECTION.BOT)
+                        (curr_tile[0]+1, curr_tile[1]), MOVING_DIRECTION.BOT, already_visited_in_direction)
                     return list(set(energized_tiles + top_energized + bot_energized))
 
                 elif tile_state == "/":
                     top_energized = self.move_and_energize(
-                        (curr_tile[0]-1, curr_tile[1]), MOVING_DIRECTION.TOP)
+                        (curr_tile[0]-1, curr_tile[1]), MOVING_DIRECTION.TOP, already_visited_in_direction)
                     return list(set(energized_tiles + top_energized))
 
                 elif tile_state == "\\":
                     bot_energized = self.move_and_energize(
-                        (curr_tile[0]+1, curr_tile[1]), MOVING_DIRECTION.BOT)
+                        (curr_tile[0]+1, curr_tile[1]), MOVING_DIRECTION.BOT, already_visited_in_direction)
                     return list(set(energized_tiles + bot_energized))
 
                 else:
@@ -101,25 +122,25 @@ class ContraptionMap():
                     return energized_tiles
 
                 energized_tiles.append(curr_tile)
-                self.already_visited_in_direction[(
+                already_visited_in_direction[(
                     curr_tile, direction)] = True
                 tile_state = self.map[curr_tile]
-                
+
                 if tile_state == "-":
                     left_energized = self.move_and_energize(
-                        (curr_tile[0], curr_tile[1]-1), MOVING_DIRECTION.LEFT)
+                        (curr_tile[0], curr_tile[1]-1), MOVING_DIRECTION.LEFT, already_visited_in_direction)
                     right_energized = self.move_and_energize(
-                        (curr_tile[0], curr_tile[1]+1), MOVING_DIRECTION.RIGHT)
+                        (curr_tile[0], curr_tile[1]+1), MOVING_DIRECTION.RIGHT, already_visited_in_direction)
                     return list(set(energized_tiles + left_energized + right_energized))
 
                 elif tile_state == "/":
                     right_energized = self.move_and_energize(
-                        (curr_tile[0], curr_tile[1]+1), MOVING_DIRECTION.RIGHT)
+                        (curr_tile[0], curr_tile[1]+1), MOVING_DIRECTION.RIGHT, already_visited_in_direction)
                     return list(set(energized_tiles + right_energized))
 
                 elif tile_state == "\\":
                     left_energized = self.move_and_energize(
-                        (curr_tile[0], curr_tile[1]-1), MOVING_DIRECTION.LEFT)
+                        (curr_tile[0], curr_tile[1]-1), MOVING_DIRECTION.LEFT, already_visited_in_direction)
                     return list(set(energized_tiles + left_energized))
 
                 else:
@@ -131,25 +152,25 @@ class ContraptionMap():
                     return energized_tiles
 
                 energized_tiles.append(curr_tile)
-                self.already_visited_in_direction[(
+                already_visited_in_direction[(
                     curr_tile, direction)] = True
                 tile_state = self.map[curr_tile]
-                
+
                 if tile_state == "-":
                     left_energized = self.move_and_energize(
-                        (curr_tile[0], curr_tile[1]-1), MOVING_DIRECTION.LEFT)
+                        (curr_tile[0], curr_tile[1]-1), MOVING_DIRECTION.LEFT, already_visited_in_direction)
                     right_energized = self.move_and_energize(
-                        (curr_tile[0], curr_tile[1]+1), MOVING_DIRECTION.RIGHT)
+                        (curr_tile[0], curr_tile[1]+1), MOVING_DIRECTION.RIGHT, already_visited_in_direction)
                     return list(set(energized_tiles + left_energized + right_energized))
 
                 elif tile_state == "/":
                     left_energized = self.move_and_energize(
-                        (curr_tile[0], curr_tile[1]-1), MOVING_DIRECTION.LEFT)
+                        (curr_tile[0], curr_tile[1]-1), MOVING_DIRECTION.LEFT, already_visited_in_direction)
                     return list(set(energized_tiles + left_energized))
 
                 elif tile_state == "\\":
                     right_energized = self.move_and_energize(
-                        (curr_tile[0], curr_tile[1]+1), MOVING_DIRECTION.RIGHT)
+                        (curr_tile[0], curr_tile[1]+1), MOVING_DIRECTION.RIGHT, already_visited_in_direction)
                     return list(set(energized_tiles + right_energized))
 
                 else:
@@ -165,3 +186,4 @@ if __name__ == "__main__":
         map = ContraptionMap(map)
         energized_tiles = map.get_energized_tiles()
         print(f"Part 1 Result: {len(energized_tiles)}")
+        print(f"Part 2 Result: {map.get_largest_amount_of_energized_tiles()}")
