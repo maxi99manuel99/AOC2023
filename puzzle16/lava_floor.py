@@ -49,6 +49,9 @@ class ContraptionMap():
 
         :param start_tile: The tile to start moving from
         :param direction: The direction to move in
+        :param already_visited_in_direction: Contains tuples of tiles and a direction
+                                             from which they were encountered as keys and 
+                                             a bool. Is used to not get stuck moving in a cycle
         """
         if already_visited_in_direction.get((start_tile, direction), False):
             return []
