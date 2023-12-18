@@ -24,6 +24,12 @@ class HeatLossMap():
         self.height, self.width = self.heat_map.shape
 
     def find_route_with_min_heat_loss(self, start_block: tuple[int, int], goal_block: tuple[int, int]) -> int:
+        """
+        Finds route of minimal heat loss from start_block to goal block using dijkstra
+
+        :param start_block: the block to start on (the heat loss of this block is not considered)
+        :param goal_block: the block to get to
+        """
         priority_queue = []
         visited = set()
 
@@ -48,24 +54,32 @@ class HeatLossMap():
                     heapq.heappush(priority_queue, neighbor_obj)
 
     def get_neighbors(self, pos: tuple[int, int], prev_direction: DIRECTION, direction_streak: int) -> list[tuple[tuple[int, int], tuple[DIRECTION, int]]]:
+        """
+        Returns all neighbors for a given block but only if it is still viable to move to those neighbors
+        (based on the previous direction and how many times we went straight in that direction)
+
+        :param pos: the block to get the neighbors of
+        :param prev_direction: the direction we were previously moving
+        :param direction_streak: for how many times straight we already moved into that direction
+        """
         neighbors = []
 
-        if (pos[0] - 1 >= 0) and not (prev_direction == DIRECTION.TOP and direction_streak == 3):
+        if (pos[0] - 1 >= 0) and not (prev_direction == DIRECTION.TOP and direction_streak == 3) and not prev_direction == DIRECTION.BOT:
             top_pos = (pos[0] - 1, pos[1])
             new_direction_streak = direction_streak+1 if prev_direction == DIRECTION.TOP else 1
             neighbors.append((top_pos, (DIRECTION.TOP, new_direction_streak)))
 
-        if (pos[0] + 1 < self.height) and not (prev_direction == DIRECTION.BOT and direction_streak == 3):
+        if (pos[0] + 1 < self.height) and not (prev_direction == DIRECTION.BOT and direction_streak == 3) and not prev_direction == DIRECTION.TOP:
             bot_pos = (pos[0] + 1, pos[1])
             new_direction_streak = direction_streak+1 if prev_direction == DIRECTION.BOT else 1
             neighbors.append((bot_pos, (DIRECTION.BOT, new_direction_streak)))
 
-        if (pos[1] - 1 >= 0) and not (prev_direction == DIRECTION.LEFT and direction_streak == 3):
+        if (pos[1] - 1 >= 0) and not (prev_direction == DIRECTION.LEFT and direction_streak == 3) and not prev_direction == DIRECTION.RIGHT:
             left_pos = (pos[0], pos[1] - 1)
             new_direction_streak = direction_streak+1 if prev_direction == DIRECTION.LEFT else 1
             neighbors.append((left_pos, (DIRECTION.LEFT, new_direction_streak)))
 
-        if (pos[1] + 1 < self.width) and not (prev_direction == DIRECTION.RIGHT and direction_streak == 3):
+        if (pos[1] + 1 < self.width) and not (prev_direction == DIRECTION.RIGHT and direction_streak == 3) and not prev_direction == DIRECTION.LEFT:
             right_pos = (pos[0], pos[1] + 1)
             new_direction_streak = direction_streak+1 if prev_direction == DIRECTION.RIGHT else 1
             neighbors.append((right_pos, (DIRECTION.RIGHT, new_direction_streak)))
