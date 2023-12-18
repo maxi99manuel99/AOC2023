@@ -48,7 +48,8 @@ class HeatLossMap():
             curr_obj = heapq.heappop(priority_queue)
             pos, heat_loss, (prev_direction,
                              direction_streak) = curr_obj.position, curr_obj.heat_loss, curr_obj.moving_direction
-            if pos == goal_block:
+            
+            if pos == goal_block and direction_streak >= minimal_steps_in_direction:
                 return heat_loss
 
             if (pos, prev_direction, direction_streak) in visited:
@@ -74,8 +75,7 @@ class HeatLossMap():
         :param maximal_steps_in_direction: defines the maximum amount of steps we are allowed to move into one direction until turning
         """
         neighbors = []
-        print(prev_direction)
-        print(direction_streak)
+     
         if (pos[0] - 1 >= 0) and not (prev_direction == DIRECTION.TOP and direction_streak == maximal_steps_in_direction) and not (prev_direction != DIRECTION.TOP and direction_streak < minimal_steps_in_direction) and not prev_direction == DIRECTION.BOT:
             top_pos = (pos[0] - 1, pos[1])
             new_direction_streak = direction_streak + \
@@ -101,7 +101,7 @@ class HeatLossMap():
                 1 if prev_direction == DIRECTION.RIGHT else 1
             neighbors.append(
                 (right_pos, (DIRECTION.RIGHT, new_direction_streak)))
-        print(neighbors)
+   
         return neighbors
 
 
