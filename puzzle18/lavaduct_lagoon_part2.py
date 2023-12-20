@@ -23,7 +23,6 @@ def count_holes(edge_points_per_row: dict[int, VerticalEdgePoint]) -> int:
     """
     count = 0
     for j, row in enumerate(edge_points_per_row.keys()):
-        print(j)
         edge_points = sorted(edge_points_per_row[row], key=lambda x: x.x)
         inside = True
         for i in range(len(edge_points)-1):
@@ -104,7 +103,6 @@ if __name__ == "__main__":
                     edge_points_per_row.setdefault(curr_tile[0]+steps, []).append(VerticalEdgePoint(
                         x=curr_tile[1], is_edge_start=True, turn_direction=next_turn_direction))
                 curr_tile = (curr_tile[0]+steps, curr_tile[1])
-            print(i)
                 
 
         print(f"Part 2 Result {count_holes(edge_points_per_row)}")
