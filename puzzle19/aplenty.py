@@ -82,17 +82,13 @@ def possible_accepted(workflow_dict: dict, curr_workflow: str, curr_ranges: list
                 condition[2:])
             new_ranges = copy.deepcopy(curr_ranges)
             if comparator == ">":
-                if curr_ranges[var][1] <= count:
-                    continue
                 curr_ranges[var][1] = count
-                new_ranges[var][0] = max(count+1, new_ranges[var][0])
+                new_ranges[var][0] = count+1
                 accepted_ranges += possible_accepted(
                     workflow_dict, next_workflow, new_ranges)
             else:
-                if curr_ranges[var][0] >= count:
-                    continue
                 curr_ranges[var][0] = count
-                new_ranges[var][1] = min(count-1, curr_ranges[var][1])
+                new_ranges[var][1] = count-1
                 accepted_ranges += possible_accepted(
                     workflow_dict, next_workflow, new_ranges)
 
