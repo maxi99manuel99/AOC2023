@@ -80,21 +80,21 @@ def possible_accepted(workflow_dict: dict, curr_workflow: str, curr_ranges: list
             condition, next_workflow = instruction.split(":")
             var, comparator, count = condition[0], condition[1], int(
                 condition[2:])
-            new_curr_ranges = copy.deepcopy(curr_ranges)
+            new_ranges = copy.deepcopy(curr_ranges)
             if comparator == ">":
                 if curr_ranges[var][1] <= count:
                     continue
                 curr_ranges[var][1] = count
-                new_curr_ranges[var][0] = max(count+1, new_curr_ranges[var][0])
+                new_ranges[var][0] = max(count+1, new_ranges[var][0])
                 accepted_ranges += possible_accepted(
-                    workflow_dict, next_workflow, new_curr_ranges)
+                    workflow_dict, next_workflow, new_ranges)
             else:
                 if curr_ranges[var][0] >= count:
                     continue
                 curr_ranges[var][0] = count
-                new_curr_ranges[var][1] = min(count-1, curr_ranges[var][1])
+                new_ranges[var][1] = min(count-1, curr_ranges[var][1])
                 accepted_ranges += possible_accepted(
-                    workflow_dict, next_workflow, new_curr_ranges)
+                    workflow_dict, next_workflow, new_ranges)
 
     return accepted_ranges
 
