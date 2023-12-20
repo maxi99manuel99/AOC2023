@@ -36,23 +36,27 @@ def count_holes(edge_points_per_row: dict[int, VerticalEdgePoint]) -> int:
 
 if __name__ == "__main__":
     with open("input.txt") as fp:
-        instructions = []
+        direction_with_colors = []
         while line := fp.readline():
             line = line.strip().split()
-            instructions.append((line[0], int(line[1])))
+            direction_with_colors.append(
+                ((line[0], int(line[1])), line[2][1:-1]))
 
         edge_points_per_row = {}
         curr_tile = (0, 0)
-        next_direction, next_steps = instructions[0]
-
-        for i in range(1, len(instructions), 2):
-            prev_direction, prev_steps = next_direction, next_steps
-            if i == len(instructions) - 1:
-                next_direction, next_steps = instructions[0]
+        (next_direction, next_steps), next_color = direction_with_colors[0]
+        
+        for i in range(1, len(direction_with_colors), 2):
+            (prev_direction, prev_steps), prev_color = (
+                next_direction, next_steps), next_color
+            if i == len(direction_with_colors) - 1:
+                (next_direction,
+                 next_steps), next_color = direction_with_colors[0]
             else:
-                next_direction, next_steps = instructions[i+1]
-
-            direction, steps = instructions[i]
+                (next_direction,
+                 next_steps), next_color = direction_with_colors[i+1]
+            
+            (direction, steps), color = direction_with_colors[i]
 
             if prev_direction == "L":
                 curr_tile = (curr_tile[0], curr_tile[1]-prev_steps)
