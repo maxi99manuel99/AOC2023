@@ -1,8 +1,10 @@
+import math
 import numpy as np
 
 from modules import Module, PULSE_TYPE
 
 SEND_QUEUE = []
+IS_MACHINE_TURNED_ON = False
 
 
 class Broadcaster(Module):
@@ -39,6 +41,12 @@ class FlipFlop(Module):
                 for dest in self.destinations:
                     SEND_QUEUE.append((self, PULSE_TYPE.LOW, dest))
             self.on = not self.on
+    
+    def reset_default(self):
+        """
+        Resets the flip flop to its original state, meaning that it should be off
+        """
+        self.on = False
 
 
 class Conjunction(Module):
@@ -70,6 +78,24 @@ class Conjunction(Module):
         else:
             for dest in self.destinations:
                 SEND_QUEUE.append((self, PULSE_TYPE.HIGH, dest))
+    
+    def reset_default(self):
+        """
+        Resets the conjunction to its original state, meaning that all the last pulses,
+        that need to be remembered should be defaulted to low
+        """
+        for name in self.last_pulses.keys():
+            self.last_pulses[name] = PULSE_TYPE.LOW
+
+class Rx(Module):
+    def receive(self, received_from: Module, pulse: PULSE_TYPE):
+        """
+        The Rx module should do nothing with the pulse it receives
+
+        :param received_from: The module the pulse was sent by. Not relevant for this module
+        :param pulse: The pulse to receive
+        """
+        pass
 
 
 def push_button_n_times(start_module: Module, n: int) -> int:
@@ -94,6 +120,31 @@ def push_button_n_times(start_module: Module, n: int) -> int:
 
     return counts[PULSE_TYPE.HIGH] * counts[PULSE_TYPE.LOW]
 
+def count_button_press_till_machine_on(start_module: Module, rx_predecessor: Module) -> int:
+    """
+    Returns the amount of button presses needed till a low pulse would be send to the Rx 
+    module
+
+    :param start_module: The module that the first low pulse after every button press is send to
+    :param rx_predecessor: The predecessor module that sends pulses to the rx module
+    """
+    count = 0
+    modules_to_rx_loops = {}
+    for module in rx_predecessor.last_pulses.keys():
+        modules_to_rx_loops[module] = 0
+
+    while True:
+        count += 1
+        start_module.receive(PULSE_TYPE.LOW)
+        while SEND_QUEUE:
+            source, pulse, dest = SEND_QUEUE.pop(0)
+            dest.receive(source, pulse)
+            if dest == rx_predecessor and pulse == PULSE_TYPE.HIGH:
+                if modules_to_rx_loops[source.name] == 0:
+                    modules_to_rx_loops[source.name] = count
+                    if np.all(np.array(list(modules_to_rx_loops.values())) != 0):
+                        return math.lcm(*list(modules_to_rx_loops.values()))
+
 
 if __name__ == "__main__":
     modules_dict = {}
@@ -114,7 +165,8 @@ if __name__ == "__main__":
         destination_list = []
         for char in destination_str:
             if not char in modules_dict:
-                receiving_module = Module(char)
+                receiving_module = Rx(char)
+                rx_predecessor = module
             else:
                 receiving_module = modules_dict[char][0]
             destination_list.append(receiving_module)
@@ -123,3 +175,7 @@ if __name__ == "__main__":
         module.set_destinations(destination_list)
 
     print(f"Result Part 1: {push_button_n_times(start_module, 1000)}")
+    for module, _ in modules_dict.values():
+        module.reset_default()
+    print(f"Result Part 2: {count_button_press_till_machine_on(start_module, rx_predecessor)}")
+

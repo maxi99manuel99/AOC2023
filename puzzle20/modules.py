@@ -20,11 +20,9 @@ class Module():
         """
         self.destinations = destination_list
 
-    def receive(self, received_from: Module, pulse: PULSE_TYPE):
+    def reset_default(self):
         """
-        The base class modules receive does nothing with the passed pulse.
-
-        :param received_from: The module the pulse was sent by
-        :param pulse: The pulse to receive
+        The reset_default function does nothing in the base class
+        and should be overwritte if anything has to be reset
         """
         pass
