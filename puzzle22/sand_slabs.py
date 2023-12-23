@@ -214,7 +214,7 @@ class BrickMap():
 
         for key in self.support_dict.keys():
             sum += self.count_disintegrations_caused_by(key)
-        
+
         return sum
 
 
@@ -244,6 +244,7 @@ if __name__ == "__main__":
         for j, (brick_start, brick_end) in enumerate(bricks):
             expanding_dim = np.where(
                 np.array(brick_start) != np.array(brick_end))[0]
+
             if len(expanding_dim) > 0:
                 expanding_dim = expanding_dim[0]
                 bricks[j] = (
@@ -255,6 +256,7 @@ if __name__ == "__main__":
                         brick_map[(brick_start[0], i, brick_start[2])] = j+1
                     else:
                         brick_map[(brick_start[0], brick_start[1], i)] = j+1
+
             else:
                 bricks[j] = (j+1, BrickRange(expanding_dim=np.inf,
                              start=brick_start, end=brick_end))
