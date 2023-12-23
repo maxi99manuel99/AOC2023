@@ -96,7 +96,9 @@ class BrickMap():
 
                 if brick_below:
                     break
+
                 lowest_z_possible -= 1
+
             old_brick_start = copy.deepcopy(brick.start)
             old_brick_end = copy.deepcopy(brick.end)
             brick.end = (brick.end[0], brick.end[1],
@@ -211,7 +213,8 @@ class BrickMap():
         sum = 0
 
         for key in self.support_dict.keys():
-            sum += self.traverse_and_count(key)
+            sum += self.count_disintegrations_caused_by(key)
+        
         return sum
 
 
