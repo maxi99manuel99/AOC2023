@@ -9,9 +9,11 @@ class HikingMap():
 
     def get_reachable_neighbors(self, position: tuple[int, int], visited: npt.NDArray, ignore_slopes: bool = False) -> list[tuple[int, int]]:
         """
-        Returns all neighbor positions that one could walk too
+        Returns all neighbor positions that one could walk to
 
         :param position: The position to check the neighbors for
+        :param visited: All positions that were already visited (we do not step on the same tile twice)
+        :param ignore_slopes: If set to true slopes are treated as normal path points, defaults to False
         """
         if not ignore_slopes:
             if self.map[position] == "^":
@@ -45,6 +47,15 @@ class HikingMap():
         return neighbors
 
     def get_possible_path_lengths(self, start: tuple[int, int], goal: tuple[int, int], visited: npt.NDArray, curr_length: int = 0, ignore_slopes: bool = False) -> list[int]:
+        """
+        Returns a list containing all possible path lengths from start to goal, by recursively traversing the map
+
+        :param start: the start point
+        :param goal: the point we want to reach
+        :param visited: all visited fields in the current recursion
+        :param curr_length: the path length in the current recursion, defaults to 0
+        :param ignore_slopes: If set to true slopes are treated as normal path points, defaults to False
+        """
         pos = start
         visited[pos] = True
         if pos == goal:
@@ -71,6 +82,13 @@ class HikingMap():
                 return path_lengths
 
     def find_longest_path(self, start: tuple[int, int], goal: tuple[int, int], ignore_slopes: bool = False) -> int:
+        """
+        Returns the length of the longest path between start and goal
+
+        :param start: the start point
+        :param goal: the point we want to reach
+        :param ignore_slopes: If set to true slopes are treated as normal path points, defaults to False
+        """
         paths = self.get_possible_path_lengths(start, goal, np.zeros_like(
             self.map, dtype=bool), ignore_slopes=ignore_slopes)
         return max(paths)
